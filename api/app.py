@@ -4,6 +4,7 @@ import subprocess
 from flask import Flask, request, jsonify, send_file
 from tempfile import TemporaryDirectory
 from flask_cors import CORS
+import sys
 
 app = Flask(__name__)
 CORS(app)
@@ -84,4 +85,11 @@ def root():
     return jsonify({'message': 'Welcome to the YouTube Clip API'})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+
+    # Check for environment argument
+    env = sys.argv[1] if len(sys.argv) > 1 else 'dev'
+
+    if env == 'prod':
+        app.run(host='0.0.0.0', port=8000)
+    else:
+        app.run(debug=True)
